@@ -18,10 +18,16 @@ $user = mysqli_fetch_assoc($result);
 
 // Consulta para os vestidos favoritos
 $sql_vestidos = "
-    SELECT p.id_portfolio, p.nome_portfolio, p.image
+    SELECT 
+    p.id_portfolio, 
+    p.nome_portfolio, 
+    p.image, 
+    c.id_categoria, 
+    c.nome_categoria
     FROM favoritos f
     JOIN portfolio p ON f.portfolio_id_portfolio = p.id_portfolio
-    WHERE f.usuario_id_usuario = ?";
+    JOIN categoria c ON p.categoria_id_categoria = c.id_categoria
+    WHERE f.usuario_id_usuario = ?;";
 $stmt_vestidos = mysqli_prepare($mysqli, $sql_vestidos);
 mysqli_stmt_bind_param($stmt_vestidos, 'i', $user_id);
 mysqli_stmt_execute($stmt_vestidos);
@@ -84,29 +90,42 @@ while ($row = mysqli_fetch_assoc($result_vestidos)) {
             </div>
 
             <div class="favs"><div class="img-fav">
-                <?php if (!empty($vestidos_favoritos)): ?>
-                    <?php foreach ($vestidos_favoritos as $vestido): ?>
-                        
-                            <div class="box-fav">
-                                <img src="../backBack/upload/<?php echo htmlspecialchars($vestido['image']); ?>" alt="<?php echo htmlspecialchars($vestido['nome_portfolio']); ?>">
-                                <div class="buttons-fav">
-                                    <button class="btn-fav">
-                                    <a id="a-fav" href="descricao.php?id=<?php echo $vestido['id_portfolio']; ?>&nome=vestido">
-                                        DETALHES
-                                    </a>
-                                    </button>
-                                    <form action="../backBack/delete/delete_favorito.php" method="POST">
-                                        <input type="hidden" name="portfolio_id" value="<?php echo htmlspecialchars($vestido['id_portfolio']); ?>">
-                                        <button type="submit" class="btn-remover">REMOVER</button>
-                                    </form>
+            <?php if (!empty($vestidos_favoritos)): ?>
+    <?php foreach ($vestidos_favoritos as $vestido): ?>
+        <?php 
+            // Verifica a categoria e define o valor do parâmetro 'nome'
+            $nome_categoria = $vestido['nome_categoria'];
+            $nome_param = ''; // Inicializa a variável
 
-                                
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>Nenhum vestido salvo como favorito.</p>
-                <?php endif; ?></div>
+            if ($nome_categoria == 'Vestidos de Noiva') {
+                $nome_param = 'vestido';
+            }elseif($nome_categoria == 'Buquês'){
+                $nome_param = 'buques';
+            }elseif($nome_categoria == 'Decoração'){
+                $nome_param = 'temas';
+            } elseif ($nome_categoria == 'Paletas de Cores') {
+                $nome_param = 'paleta';
+            }
+        ?>
+        <div class="box-fav">
+            <img src="../backBack/upload/<?php echo htmlspecialchars($vestido['image']); ?>" alt="<?php echo htmlspecialchars($vestido['nome_portfolio']); ?>">
+            <div class="buttons-fav">
+                <button class="btn-fav">
+                    <a id="a-fav" href="descricao.php?id=<?php echo $vestido['id_portfolio']; ?>&nome=<?php echo $nome_param; ?>">
+                        DETALHES
+                    </a>
+                </button>
+                <form action="../backBack/delete/delete_favorito.php" method="POST">
+                    <input type="hidden" name="portfolio_id" value="<?php echo htmlspecialchars($vestido['id_portfolio']); ?>">
+                    <button type="submit" class="btn-remover">REMOVER</button>
+                </form>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>Nenhum vestido salvo como favorito.</p>
+<?php endif; ?>
+</div>
             </div>
         </section>
     </main>

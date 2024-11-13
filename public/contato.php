@@ -24,11 +24,11 @@
     </nav> -->
     <main id="main-contato">
         <div class="container container-contato">
-            <div class="row">
+            <div class="row" id="row-contato">
                 <div class="col-md-8" id="div1">
                     <div class="texto mb-4">
                         <h3>Entre em contato conosco!</h3>
-                        <p>Gostaríamos muito de ouvir de você! Se tiver alguma dúvida, sugestão ou feedback, entre em contato conosco usando uma das opções abaixo. Estamos aqui para ajudar a tornar a sua experiência de planejamento de casamento ainda mais inspiradora.</p>
+                        <p id="p-contato">Gostaríamos muito de ouvir de você! Se tiver alguma dúvida, sugestão ou feedback, entre em contato conosco usando uma das opções abaixo. Estamos aqui para ajudar a tornar a sua experiência de planejamento de casamento ainda mais inspiradora.</p>
                         <article>    
                         <p><i class="bi bi-telephone"></i>(18) 99770-7859</p>
                             <p><i class="bi bi-envelope-heart"></i>@makingdreams</p></article>
@@ -72,7 +72,6 @@
             </div>
         </div>
     </div>
-    <script src="js/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         // Se houver uma mensagem, abrir o modal automaticamente
@@ -82,6 +81,8 @@
             myModal.show();
         }
     </script>
+        <script src="js/footer.js"></script>
+
 </body>
 </html>
  

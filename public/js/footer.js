@@ -1,5 +1,5 @@
     document.writeln(`
-        <footer class="py-4 mt-5" style="background-color: #5A1D1D; color: #ffffff; width: 100%; position: relative; bottom: 0;">
+        <footer class="py-4 mt-5" style="background-color: #5A1D1D; color: #ffffff; width: 100%; position: relative; bottom: -100;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
