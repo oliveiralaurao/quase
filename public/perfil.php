@@ -46,6 +46,18 @@ while ($row = mysqli_fetch_assoc($result_vestidos)) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+#editarperfil {
+    margin: 5px;
+    color: #fff;
+    transition: transform 0.3s ease; /* Transição suave */
+}
+
+#editarperfil:hover {
+    transform: scale(1.1); /* Aumenta 10% quando o mouse passa por cima */
+}
+
+    </style>
 </head>
 <body id="perfil">
     <script src="js/topo.js"></script>
@@ -65,36 +77,36 @@ while ($row = mysqli_fetch_assoc($result_vestidos)) {
                 <!-- Exibe o nome completo do usuário -->
                 <div id="namePerfil">
                     <?php echo htmlspecialchars($user['nome_usuario']) . ' ' . htmlspecialchars($user['sobrenome_usuario']); ?>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#updateModal">
+                    <a href="#" data-bs-toggle="modal" id="editarperfil" data-bs-target="#updateModal">
     <span class="material-symbols-outlined">edit</span>
 </a>
                     </div>
             </div>
 
-            <div class="favs">
+            <div class="favs"><div class="img-fav">
                 <?php if (!empty($vestidos_favoritos)): ?>
                     <?php foreach ($vestidos_favoritos as $vestido): ?>
-                        <div class="img-fav">
+                        
                             <div class="box-fav">
                                 <img src="../backBack/upload/<?php echo htmlspecialchars($vestido['image']); ?>" alt="<?php echo htmlspecialchars($vestido['nome_portfolio']); ?>">
                                 <div class="buttons-fav">
                                     <button class="btn-fav">
-                                    <a href="descricao.php?id=<?php echo $vestido['id_portfolio']; ?>&nome=vestido">
+                                    <a id="a-fav" href="descricao.php?id=<?php echo $vestido['id_portfolio']; ?>&nome=vestido">
                                         DETALHES
                                     </a>
                                     </button>
                                     <form action="../backBack/delete/delete_favorito.php" method="POST">
                                         <input type="hidden" name="portfolio_id" value="<?php echo htmlspecialchars($vestido['id_portfolio']); ?>">
-                                        <button type="submit" class="btn-remover">Remover dos Favoritos</button>
+                                        <button type="submit" class="btn-remover">REMOVER</button>
                                     </form>
 
-                                </div>
+                                
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p>Nenhum vestido salvo como favorito.</p>
-                <?php endif; ?>
+                <?php endif; ?></div>
             </div>
         </section>
     </main>

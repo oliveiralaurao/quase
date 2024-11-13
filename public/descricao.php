@@ -52,6 +52,11 @@ if (isset($_GET['msg'])) {
     }
 }
 
+$favorito_sql = "SELECT * FROM favoritos WHERE usuario_id_usuario = $id_user AND portfolio_id_portfolio = {$vestido['id_portfolio']};";
+$favorito_result = $mysqli->query($favorito_sql);
+
+$is_favorito = $favorito_result && mysqli_num_rows($favorito_result) > 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -93,14 +98,18 @@ if (isset($_GET['msg'])) {
             <input type="hidden" name="usuario_id" value="<?php echo $id_user; ?>">
             <input type="hidden" name="portfolio_id" value="<?php echo $vestido['id_portfolio']; ?>">
             <button type="submit" class="btn-favorito" title="Adicionar aos Favoritos">
-                <span class="material-symbols-outlined">favorite</span>
+                <?php if ($is_favorito): ?>
+                    <i class="bi bi-heart-fill"></i>
+                <?php else: ?>
+                    <span class="material-symbols-outlined">favorite</span>
+                <?php endif; ?>
             </button>
         </form>
     <?php else: ?>
         <p>Faça <a href="login.php">login</a> para adicionar aos favoritos.</p>
     <?php endif; ?>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="js/footer.js"></script>
 </body>
 </html>

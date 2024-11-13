@@ -1,28 +1,26 @@
 <?php
 require_once('../startup/connectBD.php');
-include('../backBack/cadastro/usuario.php');
+include('../backBack/cadastro/userFora.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Verificar se todos os campos obrigatórios foram preenchidos, incluindo a foto
-    if (isset($_POST['nome'], $_POST['sobrenome'], $_POST['email'], $_POST['telefone'], $_POST['senha'], $_POST['senha_repetida'], $_POST['nivel_usuario'], $_FILES['foto'])) {
+    if (isset($_POST['nome'], $_POST['sobrenome'], $_POST['email'], $_POST['telefone'], $_POST['senha'], $_POST['senha_repetida'])) {
         
-        // Verificar se o arquivo de foto foi enviado e é válido
-        if ($_FILES['foto']['error'] === UPLOAD_ERR_OK && is_uploaded_file($_FILES['foto']['tmp_name'])) {
-            $rede_social = isset($_POST['rede_social']) ? $_POST['rede_social'] : '';
-            $hobbie = isset($_POST['hobbie']) ? $_POST['hobbie'] : '';
-            $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : '';
+       
+      
+
+        $foto = null;
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK && is_uploaded_file($_FILES['foto']['tmp_name'])) {
             $foto = $_FILES['foto'];
-            $nivel_usuario = $_POST['nivel_usuario'];
-            
-            cadastra($mysqli, $_POST['nome'], $_POST['sobrenome'], $_POST['email'], $_POST['telefone'], $_POST['senha'], $_POST['senha_repetida'], $rede_social, $hobbie, $descricao, $foto, $nivel_usuario);
-        } else {
-            echo "<script>alert('É obrigatório enviar uma foto.');</script>";
         }
+
+        cadastra($mysqli, $_POST['nome'], $_POST['sobrenome'], $_POST['email'], $_POST['telefone'], $_POST['senha'], $_POST['senha_repetida'], $foto);
+        
     } else {
         echo "<script>alert('Por favor, preencha todos os campos obrigatórios.');</script>";
+        var_dump($_POST); // Isso irá mostrar o conteúdo de todos os dados enviados no POST
+
     }
 }
-
 ?>
 
 
@@ -33,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/style.css?version=1.0.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
@@ -93,9 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="cadastro-form">
             
 
-                <h2 id="cadastraaaaaa"><p id="flip-card-btn-turn-to-front"><i class="fas fa-arrow-left"></i>Login</p>Cadastro</h2>
-                <form id="cadastroForm" method="post" enctype="multipart/form-data">                    <!-- Step 1 -->
-                    <div id="step1">
+                <h2 id="cadastraaaaaa"><p id="flip-card-btn-turn-to-front"><i class="fas fa-arrow-left"></i></p>Cadastro</h2>
+                <form id="cadastroForm" method="post" enctype="multipart/form-data">
+                <div id="step1">
                         <label for="nome">Nome:</label>
                         <input type="text" id="nome" name="nome" required>
                         
@@ -105,32 +104,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required>
                         <div id="emailError" style="display:none; color:red;"></div>
-                        <label for="telefone">Telefone:</label>
-                        <input type="tel" id="telefone" name="telefone" required>
+                        
                         
                         <button type="button" onclick="nextStep()" id="segueee">Continuar</button>
                     </div>
+
                         <a href="javascript:void(0)" class="back-button" id="backButton" style="display: none;" onclick="prevStep()">
-                                            <i class="fas fa-arrow-left"></i> Voltar
+                                            <i class="fas fa-arrow-left"></i> 
                                         </a>
                     <div id="step2" style="display: none;">
                         
-                        
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" name="telefone" required>
                         <label for="senha">Senha:</label>
                         <input type="password" id="senha" name="senha" required>
                         
                         <label for="senha_repetida">Repetir senha:</label>
                         <input type="password" id="senha_repetida" name="senha_repetida" required>
-
+ 
                         <label for="foto">Foto de perfil:</label>
-                        <input type="file" id="foto" name="foto" accept="image/*">
+                        <input type="file" id="foto" name="foto" accept="image/*"> 
 
-                        <!-- Novo campo: Nível de Usuário -->
-                        <label for="nivel_usuario">Nível de Usuário:</label>
-                        <select id="nivel_usuario" name="nivel_usuario" required class="form-select ">
-                            <option value="noiva">Noiva/Noivo</option>
-                            <option value="convidado">Convidado</option>
-                        </select>
+                       <!-- Remover o campo select -->
+              
                         
                         <div id="mensagem-erro" style="display:none; color:red;"></div> <!-- Mensagem de erro aqui -->
                         <div id="apaos"></div>
@@ -150,8 +146,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
+    <main class="login-page">
+            <div class="form">
+                <form id="registerForm" class="register-form" enctype="multipart/form-data" method="post">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" required>
+                        
+                        <label for="sobrenome">Sobrenome:</label>
+                        <input type="text" id="sobrenome" name="sobrenome" required>
+                
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <div id="emailError" style="display:none; color:red;"></div>
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" id="telefone" name="telefone" required>
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" name="senha" required>
+                        
+                        <label for="senha_repetida">Repetir senha:</label>
+                        <input type="password" id="senha_repetida" name="senha_repetida" required>
+
+                        <label for="foto">Foto de perfil:</label>
+                        <input type="file" id="foto" name="foto" accept="image/*">
+
+                        <!-- Novo campo: Nível de Usuário -->
+                        
+                        
+                        <div id="mensagem-erro" style="display:none; color:red;"></div> <!-- Mensagem de erro aqui -->
+                        <div id="apaos"></div>
+                        <button type="submit" class="button-login">Cadastrar</button>
+
+
+                    <p class="message">Já tem conta? <a href="#" id="toggleLogin">Entrar</a></p>
+                </form>
+                <form id="loginForm" class="login-formm" action="../backBack/verificaLogin.php" method="post">
+                    <label for="email-login" id="label-loginn">Email:</label>
+                    <inpu   t type="email" id="email-login" class="input-login" name="email-login" required>
+                    
+                    <label for="input-login" id="label-login">Senha:</label>
+                    <input type="password" id="input-login" class="input-login" name="input-login" required>
+                    <div id="apao"></div>
+                    
+                    <button type="submit" id="button-login">Entrar</button>
+                    <p class="message">Não tem conta? <a href="#" id="toggleRegister">Criar Conta</a></p>
+                </form>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
+       
+       document.getElementById('toggleLogin').addEventListener('click', function() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'flex';
+
+        });
+        
+        document.getElementById('toggleRegister').addEventListener('click', function() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'flex';
+
+        });
+
         document.addEventListener('DOMContentLoaded', function(event) {
+
     function validarSenha() {
         const senha1 = document.getElementById("senha").value;
         const senha2 = document.getElementById("senha_repetida").value;

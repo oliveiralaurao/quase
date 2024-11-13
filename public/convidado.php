@@ -51,20 +51,25 @@ if (isset($_GET['id'])) {
                 <h2 id="h2-convidado">Lista de presentes</h2>
                 <p id="p-meuspresentes">Aqui você encontrará algumas sugestões de presentes que escolhemos com muito carinho para celebrar este momento especial. Fique à vontade para escolher o presente que desejar e, ao adquiri-lo, não se esqueça de confirmá-lo para que outros convidados saibam que já foi escolhido. Agradecemos de coração por compartilhar essa data tão importante conosco!</p>
             </div>
-            <ul>
+            
        
         </div>
-        <?php if (!empty($dados_presente)): ?>
-            <?php foreach ($dados_presente as $presente): ?>
-                <li>
-                    <strong><?php echo htmlspecialchars($presente['nome_presente']); ?></strong>
-                    <a href="<?php echo htmlspecialchars($presente['link_presente']); ?>" target="_blank">Ver Presente</a>
-                </li>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <li>Nenhum presente encontrado.</li>
-        <?php endif; ?>
-    </ul>
+        <div class="lista-presentes">
+        <ul id="lista-presentes-ul" class="present-list">
+            <?php if (!empty($dados_presente)): ?>
+                <?php foreach ($dados_presente as $presente): ?>
+                    <li class="present-item">
+                    <div class="present-details">
+                        <strong><?php echo htmlspecialchars($presente['nome_presente']); ?></strong>
+                        <a href="<?php echo htmlspecialchars($presente['link_presente']); ?>" target="_blank" class="present-link">Ver Presente</a>
+                </div>
+                    </li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li>Nenhum presente encontrado.</li>
+            <?php endif; ?>
+        </ul>
+            </div>
         
     </section>
     <script src="js/footer.js"></script>
